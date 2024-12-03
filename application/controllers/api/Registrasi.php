@@ -12,25 +12,41 @@ class registrasi extends REST_Controller
     {
         parent::__construct();
         $this->load->database();
-
-        // Allow CORS from specific origins (replace localhost with your actual front-end URL in production)
-        header('Access-Control-Allow-Origin: *');  // Or use 'http://localhost:50037' for production
-
-        // Allow specific headers
+        // CORS headers for cross-origin requests
+        header('Access-Control-Allow-Origin: *');
         header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
-
-        // Allow specific methods
         header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 
-        // Handle preflight request (OPTIONS)
+        // Handle OPTIONS request
         $method = $_SERVER['REQUEST_METHOD'];
         if ($method == "OPTIONS") {
-            // Send response for OPTIONS request and stop further processing
             die();
         }
 
-        // Load user model
+        // Load the user model
         $this->load->model('user');
+    }
+
+    // Method to handle GET requests
+    public function index_get()
+    {
+        // Example response: Get a list of users or a specific user
+        $users = $this->user->get_all();  // Assuming get_all() is a method in the 'user' model
+
+        if (!empty($users)) {
+            // Return success response with the list of users
+            $this->response([
+                'status' => TRUE,
+                'message' => 'Users retrieved successfully.',
+                'data' => $users
+            ], REST_Controller::HTTP_OK);
+        } else {
+            // Return failure response if no users found
+            $this->response([
+                'status' => FALSE,
+                'message' => 'No users found.'
+            ], REST_Controller::HTTP_NOT_FOUND);
+        }
     }
 
     public function index_post()
