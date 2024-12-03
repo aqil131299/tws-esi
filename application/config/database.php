@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '',
-	'database' => 'vigenesia',
+	'hostname' => 'sql110.devuna.tech',
+	'username' => 'devun_37838665',
+	'password' => 'a042d4e852e1371',
+	'database' => 'devun_37838665_vigenesia',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

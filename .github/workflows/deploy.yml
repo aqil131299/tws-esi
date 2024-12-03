@@ -1,0 +1,23 @@
+name: Deploy to DevunaHosting
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ftp-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v2
+
+    - name: Deploy to FTP server
+      uses: SamKirkland/FTP-Deploy-Action@4.3.0
+      with:
+        server: ftpupload.net
+        username: devun_37838665
+        password: a042d4e852e1371
+        local-dir: ./
+        server-dir: /htdocs/
