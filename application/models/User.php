@@ -17,44 +17,40 @@ class User extends CI_Model
     /*
      * Get rows from the users table
      */
-    function getRows($params = array())
-    {
-        $this->db->select('*');
-        $this->db->from($this->userTbl);
+    public function getRows($params = array())
+{
+    $this->db->select('*');
+    $this->db->from($this->userTbl);
 
-        // Fetch data by conditions
-        if (array_key_exists("conditions", $params)) {
-            foreach ($params['conditions'] as $key => $value) {
-                $this->db->where($key, $value);
-            }
+    // Fetch data by conditions
+    if (array_key_exists("conditions", $params)) {
+        foreach ($params['conditions'] as $key => $value) {
+            $this->db->where($key, $value);
         }
-
-        if (array_key_exists("iduser", $params)) {
-            $this->db->where('iduser', $params['iduser']);
-            $query = $this->db->get();
-            $result = $query->row_array();
-        } else {
-            // Set start and limit
-            if (array_key_exists("start", $params) && array_key_exists("limit", $params)) {
-                $this->db->limit($params['limit'], $params['start']);
-            } elseif (!array_key_exists("start", $params) && array_key_exists("limit", $params)) {
-                $this->db->limit($params['limit']);
-            }
-
-            if (array_key_exists("returnType", $params) && $params['returnType'] == 'count') {
-                $result = $this->db->count_all_results();
-            } elseif (array_key_exists("returnType", $params) && $params['returnType'] == 'single') {
-                $query = $this->db->get();
-                $result = ($query->num_rows() > 0) ? $query->row_array() : false;
-            } else {
-                $query = $this->db->get();
-                $result = ($query->num_rows() > 0) ? $query->result_array() : false;
-            }
-        }
-
-        // Return fetched data
-        return $result;
     }
+
+    if (array_key_exists("returnType", $params)) {
+        if ($params['returnType'] == 'all') {
+            // Return all users
+            $query = $this->db->get();
+            $result = $query->result_array();  // Return all results as an array
+        } elseif ($params['returnType'] == 'count') {
+            // Return count of rows
+            $result = $this->db->count_all_results();
+        } elseif ($params['returnType'] == 'single') {
+            // Return a single result
+            $query = $this->db->get();
+            $result = ($query->num_rows() > 0) ? $query->row_array() : false;
+        }
+    } else {
+        // Default behavior (return all rows if no returnType specified)
+        $query = $this->db->get();
+        $result = ($query->num_rows() > 0) ? $query->result_array() : false;
+    }
+
+    return $result;
+}
+
 
     /*
      * Insert user data

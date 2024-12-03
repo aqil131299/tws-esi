@@ -30,8 +30,13 @@ class registrasi extends REST_Controller
     // Method to handle GET requests
     public function index_get()
     {
-        // Example response: Get a list of users or a specific user
-        $users = $this->user->get_all();  // Assuming get_all() is a method in the 'user' model
+        // Prepare parameters for fetching users
+        $params = array(
+            'returnType' => 'all'  // To fetch all users
+        );
+
+        // Fetch users using the getRows() method from the User model
+        $users = $this->user->getRows($params);
 
         if (!empty($users)) {
             // Return success response with the list of users
@@ -41,13 +46,14 @@ class registrasi extends REST_Controller
                 'data' => $users
             ], REST_Controller::HTTP_OK);
         } else {
-            // Return failure response if no users found
+            // Return failure response if no users are found
             $this->response([
                 'status' => FALSE,
                 'message' => 'No users found.'
             ], REST_Controller::HTTP_NOT_FOUND);
         }
     }
+
 
     public function index_post()
     {
