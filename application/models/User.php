@@ -1,8 +1,10 @@
 <?php
 if (!defined('BASEPATH')) exit('No direct script access allowed');
-#[\AllowDynamicProperties]
+
 class User extends CI_Model
 {
+    // Explicitly declare the $userTbl property
+    protected $userTbl = 'user';
 
     public function __construct()
     {
@@ -10,8 +12,6 @@ class User extends CI_Model
 
         // Load the database library
         $this->load->database();
-
-        $this->userTbl = 'user';
     }
 
     /*
@@ -22,7 +22,7 @@ class User extends CI_Model
         $this->db->select('*');
         $this->db->from($this->userTbl);
 
-        //fetch data by conditions
+        // Fetch data by conditions
         if (array_key_exists("conditions", $params)) {
             foreach ($params['conditions'] as $key => $value) {
                 $this->db->where($key, $value);
@@ -34,7 +34,7 @@ class User extends CI_Model
             $query = $this->db->get();
             $result = $query->row_array();
         } else {
-            //set start and limit
+            // Set start and limit
             if (array_key_exists("start", $params) && array_key_exists("limit", $params)) {
                 $this->db->limit($params['limit'], $params['start']);
             } elseif (!array_key_exists("start", $params) && array_key_exists("limit", $params)) {
@@ -52,15 +52,16 @@ class User extends CI_Model
             }
         }
 
-        //return fetched data
+        // Return fetched data
         return $result;
     }
+
     /*
      * Insert user data
      */
     public function insert($data)
     {
-        //add created and modified date if not exists
+        // Add created and modified date if not exists
         if (!array_key_exists("tanggal_input", $data)) {
             $data['tanggal_input'] = date("Y-m-d H:i:s");
         }
@@ -72,29 +73,27 @@ class User extends CI_Model
             $data['is_active'] = 1;
         }
 
-
-        //insert user data to users table
+        // Insert user data into the users table
         $insert = $this->db->insert($this->userTbl, $data);
 
-        //return the status
+        // Return the status
         return $insert ? $this->db->insert_id() : false;
     }
-
 
     /*
      * Update user data
      */
     public function update($data, $id)
     {
-        //add modified date if not exists
+        // Add modified date if not exists
         if (!array_key_exists('modified', $data)) {
             $data['modified'] = date("Y-m-d H:i:s");
         }
 
-        //update user data in users table
+        // Update user data in users table
         $update = $this->db->update($this->userTbl, $data, array('iduser' => $id));
 
-        //return the status
+        // Return the status
         return $update ? true : false;
     }
 
@@ -103,9 +102,10 @@ class User extends CI_Model
      */
     public function delete($id)
     {
-        //update user from users table
-        $delete = $this->db->delete('user', array('iduser' => $id));
-        //return the status
+        // Delete user from the users table
+        $delete = $this->db->delete($this->userTbl, array('iduser' => $id));
+
+        // Return the status
         return $delete ? true : false;
     }
 }
