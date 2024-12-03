@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') or exit('No direct script access allowed');
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------
@@ -58,7 +58,13 @@ $autoload['packages'] = array();
 |
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
-$autoload['libraries'] = array('database');
+$autoload['libraries'] = array(
+    'database',        // Library database untuk berinteraksi dengan database
+    'session',         // Library session untuk mengelola sesi pengguna
+    'form_validation', // Library form_validation untuk validasi form
+    'email',           // Library email untuk mengirim email
+    'pagination',      // Library pagination untuk navigasi halaman
+);
 
 /*
 | -------------------------------------------------------------------
@@ -89,7 +95,15 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('url');
+$autoload['helper'] = array(
+    'url',            // Helper untuk menangani URL
+    'form',           // Helper untuk menangani form
+    'html',           // Helper untuk menangani elemen HTML
+    'date',           // Helper untuk menangani tanggal
+    'string',         // Helper untuk manipulasi string
+    'security',       // Helper untuk keamanan, seperti sanitasi input
+    'text'            // Helper untuk manipulasi teks
+);
 
 /*
 | -------------------------------------------------------------------
